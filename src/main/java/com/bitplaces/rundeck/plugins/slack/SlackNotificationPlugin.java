@@ -47,10 +47,9 @@ import freemarker.template.TemplateException;
 @PluginDescription(title="Slack", description="Sends Rundeck Notifications to Slack")
 public class SlackNotificationPlugin implements NotificationPlugin {
 
-    private static final String SLACK_API_BASE = ".slack.com/";
+    private static final String SLACK_API_BASE = "hooks.slack.com/";
     private static final String SLACK_API_URL_SCHEMA = "https://";
-    private static final String SLACK_API_WEHOOK_PATH = "services/hooks/incoming-webhook";
-    private static final String SLACK_API_TOKEN = "?token=%s";
+    private static final String SLACK_API_WEHOOK_PATH = "services/";
 
     private static final String SLACK_MESSAGE_COLOR_GREEN = "good";
     private static final String SLACK_MESSAGE_COLOR_YELLOW = "warning";
@@ -168,8 +167,7 @@ public class SlackNotificationPlugin implements NotificationPlugin {
         }
 
         String message = generateMessage(trigger, executionData, config, room);
-        String token = String.format(SLACK_API_TOKEN, urlEncode(apiAuthToken));
-        String slackResponse = invokeSlackAPIMethod(teamDomain, token, message);
+        String slackResponse = invokeSlackAPIMethod(teamDomain, apiAuthToken, message);
 
         if ("ok".equals(slackResponse)) {
             return true;
